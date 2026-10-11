@@ -4,7 +4,8 @@
   "description": "Sankalpam Today: Telugu calendar prototype",
   "scripts": {
     "test": "node test/validate.js",
-    "start": "python3 -m http.server 8080"
+    "start": "python3 -m http.server 8080",
+    "build": "node scripts/build-single.js"
   },
   "keywords": [],
   "author": "",

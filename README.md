@@ -15,6 +15,10 @@ python3 -m http.server 8080
 
 You can link to a specific day and city: `http://localhost:8080/?date=2026-06-01&city=edison`
 
+## Single-file build
+
+`npm run build` writes `dist/sankalpam-today.html`, one self-contained file with everything inlined.
+
 ## Check the calculations
 
 ```sh
