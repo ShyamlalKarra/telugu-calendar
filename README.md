@@ -44,8 +44,8 @@ longitudes of the Sun and Moon:
 
 ## Why planets go vakra (`planets.html`)
 
-Planets orbit as circles using the periods printed in *Basics of Panchangam Achara Vichara*
-(pp. 4–5), with orbit sizes from Kepler's third law and starting positions from Astronomy Engine.
+Planets orbit as circles using the periods printed in [*Basics of Panchangam*](https://multifaiths.com/pdf/Panchang.pdf)
+(S. Narasimha Rao, p. 4), with orbit sizes from Kepler's third law and starting positions from Astronomy Engine.
 "Stand on the Earth" morphs the picture from the Sun's view to the Earth's, and each orbit folds
 into loops: those loops are vakra. `test/planets-check.js` compares the model with the real sky
 for two years: Shani within ~1°, Guru ~4°, Shukra ~7°, Kuja up to ~32° (its orbit is the most oval).

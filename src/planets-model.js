@@ -1,6 +1,6 @@
 /*
  * planets-model.js — a deliberately simple solar-system model built from the periods
- * printed in "Basics of Panchangam Achara Vichara" (pp. 4–5).
+ * in "Basics of Panchangam", S. Narasimha Rao, p. 4 (https://multifaiths.com/pdf/Panchang.pdf).
  *
  *   - Every orbit is a circle around the Sun, in one plane.        (ASSUMPTION: the
  *     booklet notes orbits are elliptical; circles keep the picture readable.)
