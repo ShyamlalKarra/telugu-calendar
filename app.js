@@ -78,6 +78,84 @@
       `Sunrise ${fmtTime(d.sunrise, tz)}, sunset ${fmtTime(d.sunset, tz)} (local time). Values below are at sunrise.`;
   }
 
+  // ---------- the zoom ladder: each word narrows the one above ----------
+  // Traditional grouping (ASSUMPTION, verify): Uttarayana = Shishira, Vasanta, Grishma;
+  // Dakshinayana = Varsha, Sharad, Hemanta. Ritu here is counted by masa and ayana by
+  // the Sun, so for a few weeks a year the current ritu sits outside the current ayana.
+  const AYANA_RITUS = { Uttarayana: [5, 0, 1], Dakshinayana: [2, 3, 4] };
+  const VARA_SHORT = ['భాను', 'సోమ', 'మంగళ', 'బుధ', 'గురు', 'శుక్ర', 'శని'];
+  let ladderTimers = [];
+
+  function ladderRows(d) {
+    const m = d.masa;
+    const ritus = AYANA_RITUS[d.ayana.en];
+    const rituIdx = P.RITUS.indexOf(d.ritu);
+    const rituPos = ritus.indexOf(rituIdx);
+    const r0 = Math.floor(m.index / 2) * 2;
+    const nested = [
+      { key: 'samvatsara', n: 60, cur: d.samvatsara.index, val: d.samvatsara.te,
+        cat: `Samvatsara: year ${d.samvatsara.index + 1} of 60` },
+      { key: 'ayana', n: 2, cur: d.ayana.en === 'Uttarayana' ? 0 : 1, val: d.ayana.te,
+        cells: ['ఉత్తరాయణం', 'దక్షిణాయనం'],
+        cat: `Ayana: the Sun's half-year, ${d.ayana.en === 'Uttarayana' ? 1 : 2} of 2` },
+      { key: 'ritu', n: 3, cur: rituPos, val: d.ritu.te + ' ఋతువు',
+        cells: ritus.map((i) => P.RITUS[i].te),
+        cat: rituPos >= 0 ? `Ritu: season ${rituPos + 1} of 3 in this half`
+          : 'Ritu: counted by masa, so it runs a little behind the Sun this week' },
+      { key: 'masa', n: 2, cur: m.index - r0, val: (m.adhika ? 'అధిక ' : '') + m.name.te,
+        cells: [P.MASAS[r0].te, P.MASAS[r0 + 1].te],
+        cat: `Masa: month ${m.index - r0 + 1} of 2 in this season${m.adhika ? ' (extra month)' : ''}` },
+      { key: 'paksha', n: 2, cur: d.tithi.paksha === 'Shukla' ? 0 : 1,
+        val: d.tithi.paksha === 'Shukla' ? 'శుక్ల పక్షం' : 'కృష్ణ పక్షం', cells: ['శుక్ల', 'కృష్ణ'],
+        cat: `Paksha: fortnight ${d.tithi.paksha === 'Shukla' ? 1 : 2} of 2 in this month` },
+      { key: 'tithi', n: 15, cur: d.tithi.inPaksha - 1, val: d.tithi.name.te,
+        cat: `Tithi: lunar day ${d.tithi.inPaksha} of 15 in this fortnight` },
+    ];
+    const weekday = new Date(Date.UTC(d.date.y, d.date.m - 1, d.date.d)).getUTCDay();
+    const side = [
+      { key: 'vara', n: 7, cur: weekday, val: d.vara.te, cells: VARA_SHORT,
+        cat: `Vara: weekday ${weekday + 1} of 7` },
+      { key: 'nakshatra', n: 27, cur: d.nakshatra.number - 1, val: d.nakshatra.name.te,
+        cat: `Nakshatra: the Moon's star, ${d.nakshatra.number} of 27` },
+    ];
+    return { nested, side };
+  }
+
+  function rungHTML(r, withFunnel) {
+    const cells = Array.from({ length: r.n }, (_, i) =>
+      `<span class="cell${i === r.cur ? ' cur' : ''}" lang="te">${r.cells ? r.cells[i] : ''}</span>`).join('');
+    let funnel = '';
+    if (withFunnel && r.cur >= 0) {
+      const a = (r.cur / r.n) * 100, b = ((r.cur + 1) / r.n) * 100;
+      funnel = `<svg class="funnel" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true">
+        <polygon points="${a},0 ${b},0 100,10 0,10"></polygon></svg>`;
+    } else if (withFunnel) {
+      funnel = '<svg class="funnel" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"></svg>';
+    }
+    return `<div class="rung" data-key="${r.key}" role="button" tabindex="0"
+      aria-label="${r.cat}. Show why.">
+      <div class="lab"><span class="cat">${r.cat}</span><span class="val" lang="te">${r.val}</span></div>
+      <div class="strip" aria-hidden="true">${cells}</div>${funnel}</div>`;
+  }
+
+  function renderLadder(animate) {
+    const { nested, side } = ladderRows(state.day);
+    const box = $('rungs');
+    box.innerHTML = nested.map((r, i) => rungHTML(r, i < nested.length - 1)).join('') +
+      '<p class="side-head">Two cycles that run alongside, naming the same day:</p>' +
+      side.map((r) => rungHTML(r, false)).join('');
+    box.querySelectorAll('.rung').forEach((el) => {
+      const pick = () => { state.active = el.dataset.key; renderTerms(); renderExplain(); };
+      el.addEventListener('click', pick);
+      el.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); pick(); } });
+    });
+    ladderTimers.forEach(clearTimeout); ladderTimers = [];
+    const rungs = [...box.querySelectorAll('.rung')];
+    if (!animate || reduceMotion) { rungs.forEach((el) => el.classList.add('on')); return; }
+    rungs.forEach((el, i) => ladderTimers.push(setTimeout(() => el.classList.add('on'), 250 + i * 520)));
+  }
+  $('replay').addEventListener('click', () => renderLadder(true));
+
   // ---------- explanations (one pattern per word) ----------
   function renderExplain() {
     const d = state.day, tz = d.place.tz, el = $('explain');
@@ -253,6 +331,7 @@
     const c = CITIES[+citySel.value];
     const [y, mo, d] = dateIn.value.split('-').map(Number);
     state.day = P.day(y, mo, d, c);
+    renderLadder(true);
     renderTerms(); renderExplain();
     drawMonth(state.day.sunrise || new Date(Date.UTC(y, mo - 1, d)), true);
   }
