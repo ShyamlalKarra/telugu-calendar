@@ -13,10 +13,10 @@ const html = read('index.html')
   .replace(/<!doctype html>\s*<html[^>]*>\s*<head>\s*<meta charset="utf-8">\s*<meta name="viewport"[^>]*>/i, '')
   .replace(/<\/head>\s*<body>/i, '')
   .replace(/<\/body>\s*<\/html>\s*$/i, '')
-  .replace('<link rel="stylesheet" href="styles.css">', () => `<style>\n${css}\n</style>`)
+  .replace(/<link rel="stylesheet" href="styles.css[^"]*">/, () => `<style>\n${css}\n</style>`)
   .replace('<script src="vendor/astronomy.browser.min.js"></script>', () => `<script>\n${read('vendor/astronomy.browser.min.js')}\n</script>`)
-  .replace('<script src="src/panchang.js"></script>', () => `<script>\n${read('src/panchang.js')}\n</script>`)
-  .replace('<script src="app.js"></script>', () => `<script>\n${read('app.js')}\n</script>`);
+  .replace(/<script src="src\/panchang.js[^"]*"><\/script>/, () => `<script>\n${read('src/panchang.js')}\n</script>`)
+  .replace(/<script src="app.js[^"]*"><\/script>/, () => `<script>\n${read('app.js')}\n</script>`);
 
 fs.mkdirSync(path.join(root, 'dist'), { recursive: true });
 fs.writeFileSync(path.join(root, 'dist/sankalpam-today.html'), html.trim() + '\n');

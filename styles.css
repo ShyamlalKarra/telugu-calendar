@@ -95,7 +95,7 @@ main { max-width: 1040px; margin: 0 auto; padding: 0 16px 64px; }
 #rungs { width: 100%; display: grid; }
 .rung {
   display: grid; grid-template-columns: 230px minmax(0, 1fr); column-gap: 18px;
-  align-items: center; opacity: .3; transition: opacity .4s ease;
+  align-items: center; opacity: .12; transition: opacity .4s ease;
   cursor: pointer;
 }
 .rung.on { opacity: 1; }

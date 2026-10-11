@@ -151,10 +151,15 @@
     });
     ladderTimers.forEach(clearTimeout); ladderTimers = [];
     const rungs = [...box.querySelectorAll('.rung')];
-    if (!animate || reduceMotion) { rungs.forEach((el) => el.classList.add('on')); return; }
+    // On first load, respect reduced motion. On an explicit replay, always step through the
+    // rows (CSS drops the sliding transitions when reduced motion is on).
+    if (!animate) { rungs.forEach((el) => el.classList.add('on')); return; }
     rungs.forEach((el, i) => ladderTimers.push(setTimeout(() => el.classList.add('on'), 250 + i * 520)));
   }
-  $('replay').addEventListener('click', () => renderLadder(true));
+  $('replay').addEventListener('click', () => {
+    $('ladder-title').scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+    renderLadder(true);
+  });
 
   // ---------- explanations (one pattern per word) ----------
   function renderExplain() {
@@ -331,7 +336,7 @@
     const c = CITIES[+citySel.value];
     const [y, mo, d] = dateIn.value.split('-').map(Number);
     state.day = P.day(y, mo, d, c);
-    renderLadder(true);
+    renderLadder(!reduceMotion);
     renderTerms(); renderExplain();
     drawMonth(state.day.sunrise || new Date(Date.UTC(y, mo - 1, d)), true);
   }
