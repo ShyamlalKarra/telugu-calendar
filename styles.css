@@ -1,0 +1,151 @@
+/* Self-hosted fonts (SIL Open Font License, see fonts/) so the page works offline. */
+@font-face {
+  font-family: 'Tiro Telugu'; font-weight: 400; font-display: swap;
+  src: url(fonts/tiro-telugu-telugu-400-normal.woff2) format('woff2');
+  unicode-range: U+0951-0952, U+0964-0965, U+0C00-0C7F, U+1CDA, U+200C-200D, U+25CC;
+}
+@font-face {
+  font-family: 'Tiro Telugu'; font-weight: 400; font-display: swap;
+  src: url(fonts/tiro-telugu-latin-400-normal.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+20AC, U+2122, U+2212;
+}
+@font-face {
+  font-family: 'Atkinson Hyperlegible'; font-weight: 400; font-display: swap;
+  src: url(fonts/atkinson-hyperlegible-latin-400-normal.woff2) format('woff2');
+}
+@font-face {
+  font-family: 'Atkinson Hyperlegible'; font-weight: 700; font-display: swap;
+  src: url(fonts/atkinson-hyperlegible-latin-700-normal.woff2) format('woff2');
+}
+
+:root {
+  --night: #1A2040;
+  --slate: #2B3666;
+  --slate-2: #3A4780;
+  --turmeric: #E4B33F;
+  --moon: #ECEAF4;
+  --ash: #9AA0BE;
+  --adhika: #E4B33F;
+  --te: 'Tiro Telugu', 'Noto Serif Telugu', serif;
+  --ui: 'Atkinson Hyperlegible', system-ui, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+html { background: var(--night); }
+body {
+  margin: 0;
+  color: var(--moon);
+  font: 17px/1.55 var(--ui);
+  background:
+    radial-gradient(120% 60% at 50% 115%, #3B3A6E 0%, transparent 60%),
+    var(--night);
+  min-height: 100vh;
+}
+
+.visually-hidden {
+  position: absolute; width: 1px; height: 1px; overflow: hidden;
+  clip: rect(0 0 0 0); white-space: nowrap;
+}
+
+/* ---------- top bar ---------- */
+.bar {
+  display: flex; flex-wrap: wrap; gap: 12px 24px;
+  align-items: end; justify-content: space-between;
+  max-width: 1040px; margin: 0 auto; padding: 20px 16px 8px;
+}
+.brand { font: 400 22px/1.2 var(--te); margin: 0; color: var(--ash); }
+.controls { display: flex; flex-wrap: wrap; gap: 10px 14px; align-items: end; }
+.controls label { display: grid; gap: 4px; font-size: 13px; color: var(--ash); }
+select, input[type="date"], button {
+  font: inherit; font-size: 15px; color: var(--moon);
+  background: var(--slate); border: 1px solid var(--slate-2);
+  border-radius: 8px; padding: 7px 10px;
+}
+button { cursor: pointer; }
+button:hover { background: var(--slate-2); }
+:focus-visible { outline: 2px solid var(--turmeric); outline-offset: 2px; }
+
+main { max-width: 1040px; margin: 0 auto; padding: 0 16px 64px; }
+
+/* ---------- the recital (hero) ---------- */
+.recital { padding: 40px 0 8px; }
+.when { color: var(--ash); margin: 0 0 18px; font-size: 15px; }
+.terms {
+  list-style: none; margin: 0; padding: 0;
+  display: flex; flex-wrap: wrap; gap: 6px 26px;
+}
+.terms li { display: contents; }
+.term {
+  all: unset; cursor: pointer; display: grid; gap: 2px;
+  padding: 6px 0 8px; border-bottom: 2px solid transparent;
+}
+.term:focus-visible { outline: 2px solid var(--turmeric); outline-offset: 4px; border-radius: 4px; }
+.term .te { font: 400 clamp(30px, 5.2vw, 52px)/1.25 var(--te); }
+.term .tr { font-size: 14px; color: var(--ash); }
+.term:hover .te { color: #fff; }
+.term[aria-pressed="true"] { border-bottom-color: var(--turmeric); }
+.term[aria-pressed="true"] .tr { color: var(--turmeric); }
+.hint { color: var(--ash); font-size: 14px; margin: 18px 0 0; }
+
+/* ---------- explanation ---------- */
+.explain {
+  margin: 28px 0 8px; max-width: 68ch;
+  border-left: 2px solid var(--turmeric); padding: 2px 0 2px 18px;
+}
+.explain:empty { display: none; }
+.explain h3 { font: 400 26px/1.3 var(--te); margin: 0 0 6px; }
+.explain p { margin: 0 0 10px; }
+.explain .fact { color: var(--ash); font-size: 15px; }
+.moonbar { display: flex; gap: 3px; margin: 12px 0 6px; flex-wrap: wrap; }
+.moonbar span {
+  width: 14px; height: 14px; border-radius: 50%;
+  background: var(--slate); border: 1px solid var(--slate-2);
+}
+.moonbar span.past { background: var(--ash); }
+.moonbar span.now { background: var(--turmeric); border-color: var(--turmeric); }
+
+/* ---------- dial ---------- */
+.dial-wrap { margin-top: 48px; }
+.dial-head h2 { font: 400 30px/1.25 var(--te); margin: 0 0 6px; }
+.dial-caption { margin: 0; max-width: 64ch; color: var(--moon); min-height: 3.1em; }
+#dial { display: block; width: min(100%, 620px); margin: 18px auto 8px; }
+.scrub { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+.legend {
+  list-style: none; padding: 0; margin: 18px auto 0; max-width: 620px;
+  display: grid; gap: 6px; font-size: 14px; color: var(--ash);
+}
+.legend li { display: flex; gap: 10px; align-items: center; }
+.key { width: 22px; height: 0; border-top: 5px solid; border-radius: 3px; flex: none; }
+.key-sun { border-color: var(--moon); }
+.key-cross { width: 4px; height: 14px; border: 0; background: var(--turmeric); }
+.key-adhika { border-color: var(--adhika); border-top-style: dashed; }
+
+/* dial svg parts */
+.rashi-seg { fill: none; stroke: var(--slate); stroke-width: 44; }
+.rashi-seg.alt { stroke: #25305C; }
+.rashi-label { fill: var(--ash); font: 13px var(--ui); text-anchor: middle; dominant-baseline: middle; }
+.masa-label { fill: var(--moon); font: 15px var(--te); text-anchor: middle; dominant-baseline: middle; opacity: .55; }
+.masa-label.on { opacity: 1; fill: var(--turmeric); }
+.masa-label.skipped { text-decoration: line-through; opacity: .9; }
+.boundary { stroke: var(--night); stroke-width: 2; }
+.path-arc { fill: none; stroke: var(--moon); stroke-width: 7; stroke-linecap: round; }
+.path-arc.adhika { stroke: var(--adhika); stroke-dasharray: 2 9; }
+.cross { stroke: var(--turmeric); stroke-width: 4; stroke-linecap: round; }
+.sun { fill: var(--turmeric); }
+.center-te { fill: var(--moon); font: 30px var(--te); text-anchor: middle; }
+.center-sub { fill: var(--ash); font: 13px var(--ui); text-anchor: middle; }
+
+/* ---------- notes ---------- */
+.notes { margin-top: 64px; max-width: 68ch; color: var(--ash); font-size: 15px; }
+.notes h2 { color: var(--moon); font: 400 22px/1.3 var(--te); }
+.notes ul { padding-left: 1.1em; }
+
+@media (max-width: 560px) {
+  .terms { gap: 4px 18px; }
+  .recital { padding-top: 24px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+}

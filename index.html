@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sankalpam Today</title>
+  <meta name="description" content="Today's Telugu calendar for your sankalpam, computed for your city, with an animated explanation of how the masas are ordered.">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="bar">
+    <h1 class="brand">Sankalpam Today</h1>
+    <div class="controls">
+      <label>City
+        <select id="city"></select>
+      </label>
+      <label>Date
+        <input type="date" id="date">
+      </label>
+      <button type="button" id="today">Today</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="recital" aria-labelledby="recital-title">
+      <h2 id="recital-title" class="visually-hidden">Today's sankalpam terms</h2>
+      <p class="when" id="when"></p>
+      <ol class="terms" id="terms"></ol>
+      <p class="hint">Tap any word to see why it is today's word.</p>
+    </section>
+
+    <section class="explain" id="explain" aria-live="polite"></section>
+
+    <section class="dial-wrap" aria-labelledby="dial-title">
+      <div class="dial-head">
+        <h2 id="dial-title">How the masa gets its name</h2>
+        <p id="dial-caption" class="dial-caption"></p>
+      </div>
+      <svg id="dial" viewBox="-260 -260 520 520" role="img" aria-labelledby="dial-title dial-caption"></svg>
+      <div class="scrub">
+        <button type="button" id="prev" aria-label="Previous lunar month">‹ Month</button>
+        <button type="button" id="play">Play the year</button>
+        <button type="button" id="next" aria-label="Next lunar month">Month ›</button>
+      </div>
+      <ul class="legend">
+        <li><span class="key key-sun"></span>Sun's path during this lunar month (new moon to new moon)</li>
+        <li><span class="key key-cross"></span>Sankranti: the Sun enters a new rashi</li>
+        <li><span class="key key-adhika"></span>No sankranti inside: adhika (extra) month</li>
+      </ul>
+    </section>
+
+    <section class="notes">
+      <h2>About these calculations</h2>
+      <p>Positions come from Astronomy Engine. Tithi, nakshatra and weekday are taken at sunrise in the city you pick, so they can differ between Hyderabad and New Jersey on the same date.</p>
+      <p>This is an early prototype. Things to know:</p>
+      <ul>
+        <li>The ayanamsha is a linear approximation of Lahiri, not the official value. Near a boundary, a published panchangam can differ.</li>
+        <li>Ritu is counted from the lunar masa and ayana from the sidereal Sun. Some families count these differently.</li>
+        <li>Festival dates follow extra rules (for example, which part of the day a tithi must cover). This page shows the calendar, not festival decisions.</li>
+        <li>The words are shown in their dictionary form. The exact recited form of your sankalpam depends on your tradition; follow your teacher.</li>
+      </ul>
+    </section>
+  </main>
+
+  <script src="vendor/astronomy.browser.min.js"></script>
+  <script src="src/panchang.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
