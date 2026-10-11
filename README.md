@@ -42,6 +42,16 @@ longitudes of the Sun and Moon:
 | masa | lunar month (new moon to new moon) named by the sankranti inside it; none ⇒ adhika, two ⇒ kshaya |
 | vara | weekday, starting at local sunrise |
 
+## Why planets go vakra (`planets.html`)
+
+Planets orbit as circles using the periods printed in *Basics of Panchangam Achara Vichara*
+(pp. 4–5), with orbit sizes from Kepler's third law and starting positions from Astronomy Engine.
+"Stand on the Earth" morphs the picture from the Sun's view to the Earth's, and each orbit folds
+into loops: those loops are vakra. `test/planets-check.js` compares the model with the real sky
+for two years: Shani within ~1°, Guru ~4°, Shukra ~7°, Kuja up to ~32° (its orbit is the most oval).
+The booklet's Moon period 27.32966 d looks like a misprint for 27.32166 d (which gives the
+29.5306-day lunar month).
+
 ## Known limitations
 
 - **Ayanamsha** is a linear approximation of Lahiri, not the official value.

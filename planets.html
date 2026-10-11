@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Why Planets Go Vakra</title>
+  <meta name="description" content="Watch the planets' orbits fold into vakra loops when you move the viewpoint from the Sun to the Earth, using the periods from a panchangam primer.">
+  <link rel="stylesheet" href="styles.css?v=202610111330">
+</head>
+<body>
+  <header class="bar">
+    <a class="brand" href="./">Sankalpam Today</a>
+    <nav class="controls"><a class="navlink" href="./">Today's sankalpam</a></nav>
+  </header>
+
+  <main class="planets">
+    <section class="pl-intro">
+      <h1>Why do planets go vakra?</h1>
+      <p>Every planet moves steadily forward around the Sun. Seen from the Earth, some of them seem to stop and walk backward for weeks. Press the button and move your viewpoint from the Sun to the Earth to see why.</p>
+    </section>
+
+    <section class="pl-stage">
+      <canvas id="sky" role="img" aria-label="Orbits of the planets, seen from the Sun or from the Earth"></canvas>
+      <div class="pl-controls">
+        <button type="button" id="view" aria-pressed="false">Stand on the Earth</button>
+        <button type="button" id="playpause">Pause</button>
+        <label>Speed
+          <select id="speed">
+            <option value="10">10 days per second</option>
+            <option value="40" selected>40 days per second</option>
+            <option value="150">150 days per second</option>
+            <option value="500">500 days per second</option>
+          </select>
+        </label>
+        <button type="button" id="reset">Back to today</button>
+      </div>
+      <fieldset class="pl-pick">
+        <legend>Planets to show</legend>
+        <div id="picks"></div>
+      </fieldset>
+      <p class="pl-caption" id="caption" aria-live="polite"></p>
+    </section>
+
+    <section class="pl-now">
+      <h2 id="now-title">Where they are</h2>
+      <table class="pl-table">
+        <thead><tr><th scope="col">Graha</th><th scope="col">Rashi (seen from Earth)</th><th scope="col">Motion</th></tr></thead>
+        <tbody id="now"></tbody>
+      </table>
+    </section>
+
+    <section class="pl-data">
+      <h2>The numbers behind the picture</h2>
+      <p>The periods are the ones printed in <cite>Basics of Panchangam Achara Vichara</cite> (pages 4–5). Orbit sizes follow from them by Kepler's third law: the square of the period grows like the cube of the distance.</p>
+      <div class="pl-tablewrap">
+        <table class="pl-table">
+          <thead><tr><th scope="col">Graha</th><th scope="col">One turn around the Sun (booklet)</th><th scope="col">Distance from the Sun</th><th scope="col">How often it goes vakra</th></tr></thead>
+          <tbody id="data"></tbody>
+        </table>
+      </div>
+      <h3>Why the loops happen</h3>
+      <p>An inner planet (Budha, Shukra) runs faster than the Earth. When it passes between us and the Sun, it overtakes us and looks to be moving backward. An outer planet (Kuja, Guru, Shani) runs slower. When the Earth overtakes it, it falls behind against the stars, like a slower car seen from a faster one. The time between two vakras is the time for one of them to lap the other: 1 ÷ (1/T<sub>faster</sub> − 1/T<sub>slower</sub>).</p>
+      <h3>What this model leaves out</h3>
+      <ul>
+        <li>Orbits are drawn as circles in one plane. The booklet notes they are ovals; for Kuja, the most oval of these, a vakra can start up to about a month off. Shani and Guru stay within a few days.</li>
+        <li>Rahu and Ketu are shown at their average position, moving backward at the booklet's rate of one turn in 6,793 days.</li>
+        <li>The booklet gives the Moon's turn as 27.32966 days. I believe this is a misprint for 27.32166 days: that value gives the familiar 29.5306-day lunar month, while 27.32966 gives 29.5399 days. The Moon is not shown on this page.</li>
+      </ul>
+    </section>
+  </main>
+
+  <script src="vendor/astronomy.browser.min.js"></script>
+  <script src="src/planets-model.js?v=202610111330"></script>
+  <script src="planets.js?v=202610111330"></script>
+</body>
+</html>
